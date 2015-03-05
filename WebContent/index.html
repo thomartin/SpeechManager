@@ -1,0 +1,17 @@
+<html>
+<head><title>File Upload</title></head>
+<body>
+  <h2>Upload File</h2>
+  <form method="post" enctype="multipart/form-data" action="http://localhost:1234/Voice-Adaptation-Server/wav">
+    Choose the file to upload:
+    <input type="file" name="fileID" /> <br />
+   
+    MD5: <input type="text" name="md5" /><br />
+Speaker Initials: <input type="text" name="initials" /><br />
+Speaker First Name: <input type="text" name="firstName" /><br />
+Speaker Last Name: <input type="text" name="lastName" /><br />
+Gender: <input type="text" name="gender" /><br />
+ <input type="submit" value="SEND" /> <br />
+  </form>
+</body>
+</html>
