@@ -1,4 +1,4 @@
-package nz.ac.auckland.robot.speech_manager.connector;
+package nz.ac.auckland.robot.speech_manager.connectors;
 
 import java.util.HashMap;
 import java.util.List;

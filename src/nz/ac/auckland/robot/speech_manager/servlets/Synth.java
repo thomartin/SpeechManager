@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import nz.ac.auckland.robot.speech_manager.connector.GenericConnector;
-import nz.ac.auckland.robot.speech_manager.connector.OpenMARY;
+import nz.ac.auckland.robot.speech_manager.connectors.GenericConnector;
+import nz.ac.auckland.robot.speech_manager.connectors.OpenMARY;
 
 import org.apache.http.client.utils.URIBuilder;
 
