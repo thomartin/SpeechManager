@@ -18,9 +18,8 @@ public class Festival implements GenericConnector {
 	}
 
 	@Override
-	public void SynthesiseText(List<NameValuePair> params) {
+	public void SynthesiseText(HashMap<String, Object> params) {
 
-		
 		
 
 	}

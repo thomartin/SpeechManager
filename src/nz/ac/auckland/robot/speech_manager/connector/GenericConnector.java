@@ -8,7 +8,7 @@ import org.apache.http.NameValuePair;
 public interface GenericConnector {
 	
 	public void SynthesiseText(String text);
-	public void SynthesiseText(List<NameValuePair> params);
+	public void SynthesiseText(HashMap<String, Object> params);
 	
 
 }

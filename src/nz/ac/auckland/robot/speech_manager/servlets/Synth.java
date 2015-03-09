@@ -3,6 +3,7 @@ package nz.ac.auckland.robot.speech_manager.servlets;
 import java.io.IOException;
 import java.net.URI;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -10,11 +11,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import nz.ac.auckland.robot.speech_manager.connector.GenericConnector;
+import nz.ac.auckland.robot.speech_manager.connector.OpenMARY;
+
 import org.apache.http.client.utils.URIBuilder;
 
 
 @SuppressWarnings("serial")
-@MultipartConfig
 public class Synth extends HttpServlet 
 {
 
@@ -38,7 +41,18 @@ public class Synth extends HttpServlet
 			String text = req.getParameter("text");
 			String emotion = req.getParameter("emotion");
 			String emotionLevel = req.getParameter("emotion_level");
+			String driver = req.getParameter("driver");
+			String voice = req.getParameter("voice");
 			
+			HashMap<String, Object> params = new HashMap<String, Object>();
+			params.put("text", text);
+			params.put("emotion", emotion);
+			params.put("emotion_level", emotionLevel);
+			params.put("driver", driver);
+			params.put("voice", voice);
+			
+			GenericConnector c = new OpenMARY();
+			c.SynthesiseText(params);
 			
 			req.setAttribute("newJobID", String.format("%04X", text));
 
