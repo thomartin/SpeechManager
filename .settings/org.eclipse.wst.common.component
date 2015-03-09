@@ -2,7 +2,6 @@
     <wb-module deploy-name="SpeechManager">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/voice-adaptation-common-src"/>
         <property name="java-output-path" value="/SpeechManager/build/classes"/>
         <property name="context-root" value="SpeechManager"/>
     </wb-module>
