@@ -1,12 +1,21 @@
 package nz.ac.auckland.robot.speech_manager.connectors;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.List;
 
-import org.apache.http.NameValuePair;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 /**
  *  
@@ -26,30 +35,64 @@ public class OpenMARY implements GenericConnector {
 	private HashMap<String, String> query = new HashMap<String, String>();
 	
 	@Override
-	public void SynthesiseText(String text) {
+	public void synthesiseText(String text) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void SynthesiseText(HashMap<String, Object> params) {
+	public InputStream synthesiseText(HashMap<String, Object> params) {
 		
 		URIBuilder uriBuilder = new URIBuilder().setScheme("http").setHost("localhost").setPort(maryPort).setPath("/process");
-		SetDefaultParameters();
+		setDefaultParameters();
 		
 		query.put("INPUT_TEXT", (String) params.get("text"));
 		query.put("VOICE", (String) params.get("voice"));
 		
-		WriteParameters(uriBuilder);
-		
-		//http://localhost:59125/process?INPUT_TEXT=${!utt_name_var}&INPUT_TYPE=TEXT&OUTPUT_TYPE=AUDIO&LOCALE=en_NZ&AUDIO=WAVE_FILE&VOICE=$voice
+		writeParameters(uriBuilder);
 			
 		try {
 			URI u = uriBuilder.build();
+			HttpGet httpget = new HttpGet(u);
+			System.out.println("Executing request " + httpget.getRequestLine());
+			CloseableHttpClient httpClient = HttpClients.createDefault();
+			CloseableHttpResponse response = null;
+			InputStream istream = null;
+			
+			try {
+				response = httpClient.execute(httpget);
+				HttpEntity entity = response.getEntity();
+				if (entity != null)
+				{
+					istream = entity.getContent();
+				}
+				
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally
+			{
+				try {
+					response.close();
+					return istream;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+	
+			
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		return null;
 		
 
 	}
@@ -58,13 +101,13 @@ public class OpenMARY implements GenericConnector {
 	 * Sets default parameters which are unlikely to change (these are added first, so they can be overwritten by SynthesiseText)
 	 * 
 	 */
-	private void SetDefaultParameters()
+	private void setDefaultParameters()
 	{
 		
 		query.put("INPUT_TYPE", "TEXT");
 		query.put("OUTPUT_TYPE", "AUDIO");
 		query.put("LOCALE", "en_NZ");
-		query.put("AUDIO", "WAV_FILE");
+		query.put("AUDIO", "WAVE_FILE");
 		
 	}
 	
@@ -72,7 +115,7 @@ public class OpenMARY implements GenericConnector {
 	 * Write parameters to URIBuilder object
 	 * @param uriBuilder uriBuilder instance
 	 */
-	private void WriteParameters(URIBuilder uriBuilder)
+	private void writeParameters(URIBuilder uriBuilder)
 	{
 		for (String key: query.keySet())
 		{

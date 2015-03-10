@@ -1,10 +1,12 @@
 package nz.ac.auckland.robot.speech_manager.servlets;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -21,6 +23,15 @@ import org.apache.http.client.utils.URIBuilder;
 public class Synth extends HttpServlet 
 {
 
+	/**
+	 * Load config properties 
+	 */
+	public void init(ServletConfig config) throws ServletException
+	{
+		
+		System.out.println("Servlet initialised");
+	}
+	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
 	{
@@ -52,7 +63,11 @@ public class Synth extends HttpServlet
 			params.put("voice", voice);
 			
 			GenericConnector c = new OpenMARY();
-			c.SynthesiseText(params);
+			
+			InputStream audio = c.synthesiseText(params);
+			
+			// Now we need to decide whether to save wav file to a temp location and play wav file, or synthesise directly to mixer.
+			// Or we could pass wav file to a parent AudioManager, and use SpeechManager purely for creating dialogue (i.e. not playing).
 			
 			req.setAttribute("newJobID", String.format("%04X", text));
 
