@@ -41,7 +41,7 @@ public class OpenMARY implements GenericConnector {
 	}
 
 	@Override
-	public InputStream synthesiseText(HashMap<String, Object> params) {
+	public byte[] synthesiseText(HashMap<String, Object> params) {
 		
 		URIBuilder uriBuilder = new URIBuilder().setScheme("http").setHost("localhost").setPort(maryPort).setPath("/process");
 		setDefaultParameters();
@@ -58,6 +58,7 @@ public class OpenMARY implements GenericConnector {
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			CloseableHttpResponse response = null;
 			InputStream istream = null;
+			byte[] audioData = null;
 			
 			try {
 				response = httpClient.execute(httpget);
@@ -65,6 +66,7 @@ public class OpenMARY implements GenericConnector {
 				if (entity != null)
 				{
 					istream = entity.getContent();
+					audioData = IOUtils.toByteArray(istream);
 				}
 				
 			} catch (ClientProtocolException e) {
@@ -77,7 +79,7 @@ public class OpenMARY implements GenericConnector {
 			{
 				try {
 					response.close();
-					return istream;
+					return audioData;
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

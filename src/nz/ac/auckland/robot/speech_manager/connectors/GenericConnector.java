@@ -9,7 +9,7 @@ import org.apache.http.NameValuePair;
 public interface GenericConnector {
 	
 	public void synthesiseText(String text);
-	public InputStream synthesiseText(HashMap<String, Object> params);
+	public byte[] synthesiseText(HashMap<String, Object> params);
 	
 
 }

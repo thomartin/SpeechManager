@@ -1,5 +1,7 @@
 package nz.ac.auckland.robot.speech_manager.servlets;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -16,7 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import nz.ac.auckland.robot.speech_manager.connectors.GenericConnector;
 import nz.ac.auckland.robot.speech_manager.connectors.OpenMARY;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.commons.io.IOUtils;
 
 
 @SuppressWarnings("serial")
@@ -41,11 +45,6 @@ public class Synth extends HttpServlet
 		try
 		{
 			URIBuilder uriBuilder = new URIBuilder().setScheme("http").setHost("localhost").setPort(9001).setPath("/SpeechManager/synth");
-			uriBuilder.addParameter("text", "Hello, I am Charlie");
-			URI u = uriBuilder.build();
-			
-			System.out.println(u);
-			
 			final String dir = System.getProperty("user.dir");
 	        System.out.println("current dir = " + dir);
 	        
@@ -64,14 +63,27 @@ public class Synth extends HttpServlet
 			
 			GenericConnector c = new OpenMARY();
 			
-			InputStream audio = c.synthesiseText(params);
+			byte[] audio = c.synthesiseText(params);
 			
 			// Now we need to decide whether to save wav file to a temp location and play wav file, or synthesise directly to mixer.
 			// Or we could pass wav file to a parent AudioManager, and use SpeechManager purely for creating dialogue (i.e. not playing).
 			
-			req.setAttribute("newJobID", String.format("%04X", text));
+			
+			
+			resp.setContentType("audio/wav");
+			resp.setContentLength(audio.length);
+			
+			//For the time being, we just return the wav file as a stream, and let the caller handle playing.
+			IOUtils.copy(new ByteArrayInputStream(audio), resp.getOutputStream());	
+			
+		
+			
+			//req.setAttribute("newJobID", String.format("%04X", text));
+			
+			 
 
-			req.getRequestDispatcher("/newJobID.jsp").forward(req,resp);
+			//req.getRequestDispatcher("/newJobID.jsp").forward(req,resp);
+			
 
 		}
 		catch (IOException e)
@@ -89,36 +101,5 @@ public class Synth extends HttpServlet
 
 
 	}
-
-	/**
-	 * Breaks full name into Initials, First Name(s), Last Name
-	 * @param name Full name in format [First1 First2 Firstn Last].  I.e. Gaius Julius Caesar
-	 * @return String[0] = Initial, String[1] = First Name(s), String[2] = Last Name (i.e. GC, Gaius Julius, Caesar)
-	 */
-	private String[] ParseName(String name)
-	{
-		String[] returnNames = {"","",""};
-		String[] names = name.split(" ");
-
-		//Build first name - concatenation of all elements except the last element
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < names.length-1; i++) 
-		{
-			sb.append(names[i] + " ");
-		}
-
-		returnNames[1] = sb.toString().trim();
-
-
-		returnNames[2] = names[names.length-1];
-
-
-		//Build Initials (first letter of first name and first letter of last name)
-		returnNames[0] = returnNames[1].substring(0, 1) + returnNames[2].substring(0, 1);
-
-		return returnNames;
-
-	}
-
 
 }

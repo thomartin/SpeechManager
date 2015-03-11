@@ -19,7 +19,7 @@ public class Festival implements GenericConnector {
 	}
 
 	@Override
-	public InputStream synthesiseText(HashMap<String, Object> params) {
+	public byte[] synthesiseText(HashMap<String, Object> params) {
 		return null;
 
 		
