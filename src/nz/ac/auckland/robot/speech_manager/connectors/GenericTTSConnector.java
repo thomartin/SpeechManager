@@ -1,12 +1,14 @@
 package nz.ac.auckland.robot.speech_manager.connectors;
 
-import java.io.InputStream;
 import java.util.HashMap;
-import java.util.List;
 
-import org.apache.http.NameValuePair;
+/**
+ * Generic connector for an external TTS engine.  All TTS drivers must implement this interface.
+ * @author sjai013
+ *
+ */
 
-public interface GenericConnector {
+public interface GenericTTSConnector {
 	
 	public void synthesiseText(String text);
 	public byte[] synthesiseText(HashMap<String, Object> params);

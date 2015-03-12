@@ -1,7 +1,5 @@
 package nz.ac.auckland.robot.speech_manager.connectors;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -25,12 +23,10 @@ import org.apache.http.impl.client.HttpClients;
  * Accepted parameters are:
  * 	text - text to synthesise
  * 	voice - voice to use
- * 	emotion - emotion type (may be one of "happy", "neutral", "sad")
- *  emotion_level - integer indicating level of emotion
  *  
  *  
  */
-public class OpenMARY implements GenericConnector {
+public class OpenMARY implements GenericTTSConnector {
 	private final int maryPort = 59125;
 	private HashMap<String, String> query = new HashMap<String, String>();
 	

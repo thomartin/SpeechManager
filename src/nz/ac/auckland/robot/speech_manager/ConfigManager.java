@@ -5,11 +5,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * This class is used to handle loading of properties from the configuration file
+ * @author sjai013
+ *
+ */
 public class ConfigManager 
 {
 	public void getPropValues() throws IOException
 	{
-		String results = "";
 		Properties prop = new Properties();
 		String propFileName = "config.properties";
 		
