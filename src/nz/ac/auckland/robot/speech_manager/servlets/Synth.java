@@ -15,7 +15,7 @@ import org.apache.commons.io.IOUtils;
 
 
 /**
- * This servlet is used to synthesise arbitary text. <br>
+ * This servlet is used to synthesise arbitrary text. <br>
  * The standard address for this is http://.../SpeechManager/synth <p>
  * The request via a GET command by the client, and the acceptable GET parameters are: <br>
  * 		text - text to synthesise <br>
@@ -64,7 +64,6 @@ public class Synth extends HttpServlet
 			params.put("emotion", emotion);
 			params.put("emotion_level", emotionLevel);
 			params.put("driver", driver);
-			params.put("voice", voice);
 			
 			String connectorNamespace = GenericTTSConnector.class.getPackage().getName();
 			GenericTTSConnector c = (GenericTTSConnector) Class.forName(connectorNamespace + "." + driver).newInstance();
