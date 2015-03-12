@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import nz.ac.auckland.robot.speech_manager.ConfigManager;
 import nz.ac.auckland.robot.speech_manager.connectors.GenericTTSConnector;
+
 import org.apache.commons.io.IOUtils;
 
 
@@ -39,6 +41,16 @@ public class Synth extends HttpServlet
 	@Override
 	public void init(ServletConfig config) throws ServletException
 	{
+		ConfigManager c = new ConfigManager();
+		try {
+			c.loadProperties();
+			c.getProperty("user");
+			c.setProperty("user", "Jain");
+			c.setProperty("defaultdriver", "OpenMARY");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		System.out.println("Servlet initialised");
 		
