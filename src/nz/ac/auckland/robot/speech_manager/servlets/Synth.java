@@ -41,12 +41,19 @@ public class Synth extends HttpServlet
 	@Override
 	public void init(ServletConfig config) throws ServletException
 	{
-		ConfigManager c = new ConfigManager();
+		ConfigManager c = null;
 		try {
-			c.loadProperties();
-			c.getProperty("user");
-			c.setProperty("user", "Jain");
-			c.setProperty("defaultdriver", "OpenMARY");
+			c = new ConfigManager();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+
+			c.getProperty("SpeechManager", "user");
+			c.setProperty("SpeechManager", "user", "Jain");
+			c.setProperty("SpeechManager", "defaultdriver", "OpenMARY");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

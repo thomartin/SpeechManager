@@ -15,10 +15,28 @@ import java.util.Properties;
  */
 public class ConfigManager 
 {
-	final String propFilePath = "H:\\config.properties";
+	final String propFilePath;
 	Properties prop;
 	
-	public void loadProperties() throws IOException
+	public ConfigManager() throws IOException
+	{
+		this("H:\\config.properties");
+	}
+	
+	public ConfigManager(String propFilePath) throws IOException
+	{
+		this.propFilePath = propFilePath;
+
+		this.loadProperties();
+		
+				
+	}
+	
+	/**
+	 * Load properties
+	 * @throws IOException
+	 */
+	private void loadProperties() throws IOException
 	{
 
 		
@@ -28,7 +46,7 @@ public class ConfigManager
 		//Make sure config file exists - if it doesn't, copy default file
 		if (!configFile.exists())
 		{
-			//TODO: Copy to copy default file
+			//TODO: Copy default file
 		}
 		
 		//Make sure it exists now, otherwise throw an exception
@@ -40,21 +58,38 @@ public class ConfigManager
 		
 		//If we get to here, file exists.  Read properties.
 		FileInputStream configFis = new FileInputStream(propFilePath);
-		prop = new Properties();
-		prop.load(configFis);		
+		this.prop = new Properties();
+		this.prop.load(configFis);		
 	}
 	
-	public String getProperty(String key)
+	/**
+	 * Get configuration property
+	 * @param module Module to which property belongs
+	 * @param moduleKey Name of key in module
+	 * @return Value of property
+	 */
+	public String getProperty(String module, String moduleKey)
 	{
-		String propVal = prop.getProperty(key);
-		System.out.println(propVal);
+		String key = module + "." + moduleKey;
+		String propVal = this.prop.getProperty(key);
 		return propVal;
 	}
 	
-	public void setProperty(String key, String value) throws FileNotFoundException, IOException
+	/**
+	 * Set configuration property
+	 * @param module Module to which property belongs
+	 * @param moduleKey Name of key in module
+	 * @param value Value of property
+	 * @throws FileNotFoundException Unable to find properties file
+	 * @throws IOException Unable to write to properties file
+	 */
+	public void setProperty(String module, String moduleKey, String value) throws FileNotFoundException, IOException
 	{
-		prop.setProperty(key, value);
-		prop.store(new FileOutputStream(propFilePath), "");
+		String key = module + "." + moduleKey;
+		
+		this.prop.setProperty(key, value);
+		this.prop.store(new FileOutputStream(propFilePath), "");
 		
 	}
+	
 }
